@@ -1,0 +1,130 @@
+﻿<Window x:Class="ResourceMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ResourceMonitor.Controls"
+        Title="Resource Monitor" 
+        Height="600" Width="350"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="#CC1E1E1E"
+        ResizeMode="NoResize"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        ShowInTaskbar="True"
+        >
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Always On Top" 
+                  IsCheckable="True"
+                  InputGestureText="Alt+T"
+                  IsChecked="{Binding IsAlwaysOnTop}"/>
+            <Separator/>
+            <MenuItem Header="Exit"
+                  Click="ExitMenuItem_Click"/>
+        </ContextMenu>
+    </Window.ContextMenu>
+    
+
+    <StackPanel Margin="10">
+        <!-- Time -->
+        <StackPanel Margin="0,10">
+            <TextBlock Text="{Binding CurrentTime}"
+                      Foreground="White"
+                      FontSize="32"
+                      HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding CurrentDate}"
+                      Foreground="White"
+                      FontSize="12"
+                      HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- CPU -->
+        <StackPanel Margin="0,10">
+            <DockPanel LastChildFill="True" Margin="0,0,0,5">
+                <Image Source="/ResourceMonitor;component/Icons/cpu.png" 
+               Width="20" Height="20"
+               Margin="0, 0, 15, 0"
+               DockPanel.Dock="Left"/>
+                <TextBlock Text="{Binding CpuUsage, StringFormat={}{0:F1}% }" 
+                  Foreground="White" 
+                  HorizontalAlignment="Right"/>
+                <TextBlock Text="CPU" 
+                  Foreground="White" 
+                  Margin="5,0"/>
+            </DockPanel>
+
+            <ItemsControl ItemsSource="{Binding CpuCores}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Margin="0,1" LastChildFill="False">
+                            <!-- Core Name -->
+                            <TextBlock DockPanel.Dock="Left"
+                             Text="{Binding Name}" 
+                             Foreground="#CCCCCC"
+                             FontSize="11" 
+                             Width="140"
+                             VerticalAlignment="Center"/>
+
+                            <!-- Percentage (Right) -->
+                            <TextBlock DockPanel.Dock="Right"
+                             Text="{Binding CurrentUsage, StringFormat={}{0:F1}%}"
+                             Foreground="#CCCCCC"
+                             FontSize="11"
+                             Width="45"
+                             TextAlignment="Right"
+                             VerticalAlignment="Center"/>
+
+                            <!-- Usage Bar (Between text) -->
+                            <Grid DockPanel.Dock="Left" Width="80" Margin="5,0">
+                                <Border Background="#22FFFFFF" 
+                                CornerRadius="2">
+                                    <Border Background="#FF2FCC40"
+                                    HorizontalAlignment="Left"
+                                    Width="{Binding CurrentUsage, Converter={StaticResource PercentageToWidthConverter}}"
+                                    CornerRadius="2"/>
+                                </Border>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <!-- RAM -->
+        <StackPanel Margin="0,10">
+            <DockPanel LastChildFill="True">
+                <Image Source="/ResourceMonitor;component/Icons/ram.png" Width="20" Height="20" DockPanel.Dock="Left" Margin="0, 0, 15, 0"/>
+                <TextBlock Text="{Binding RamUsage, StringFormat={}{0:F1}%}" Foreground="White" HorizontalAlignment="Right"/>
+                <TextBlock Text="RAM" Foreground="White" Margin="5,0"/>
+            </DockPanel>
+            <ProgressBar Value="{Binding RamUsage}" 
+                Height="4"
+                Background="#44FFFFFF"
+                Foreground="White"
+                Maximum="100"
+                BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- GPU -->
+        <StackPanel Margin="0,10">
+            <DockPanel LastChildFill="True">
+                <Image Source="/ResourceMonitor;component/Icons/gpu.png" Width="20" Height="20" Margin="0, 0, 15, 0" DockPanel.Dock="Left"/>
+                <TextBlock Text="{Binding GpuUsage, StringFormat={}{0:F1}%}" Foreground="White" HorizontalAlignment="Right"/>
+                <TextBlock Text="GPU" Foreground="White" Margin="5,0"/>
+            </DockPanel>
+            <ProgressBar Value="{Binding GpuUsage}" 
+                        Height="4"
+                        Background="#44FFFFFF"
+                        Foreground="White"
+                         Maximum="100"
+                        BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- Storage -->
+        
+
+        <!-- Network -->
+        
+    </StackPanel>
+</Window>
